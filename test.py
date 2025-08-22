@@ -80,6 +80,7 @@ top_n = st.slider("TOP N", 3, 15, 5, key="topn")
 
 
 c1, c2 = st.columns(2)
+
 with c1:
     st.markdown("**저자 TOP**")
     if "Author" in df.columns:
@@ -107,4 +108,3 @@ with c2:
             .head(10)
         )
         st.bar_chart(top_publishers)
-
