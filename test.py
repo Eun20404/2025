@@ -1,101 +1,138 @@
 import streamlit as st
-import pandas as pd
-import requests
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
+import random
 
-# 책 데이터 저장용 CSV
-BOOKS_FILE = "books.csv"
+# -----------------------------
+# 📖 문학 처방전 데이터 (25개)
+# -----------------------------
+prescriptions = {
+    # ---------------- 행복함 ----------------
+    ("행복함", "인간관계"): [
+        ("“사람이 사람에게 꽃이 될 수 있다면, 세상은 이미 낙원일 거야.” - 정호승",
+         "행복을 나눌 때 그 기쁨이 더 커지고, 당신의 기쁨이 곧 누군가의 위로가 됩니다."),
+    ],
+    ("행복함", "학업"): [
+        ("“배움은 끝이 없고, 기쁨 또한 끝이 없다.” - 탈무드",
+         "학업의 길에서도 즐거움을 느낀다면 이미 큰 성취를 얻은 거예요."),
+    ],
+    ("행복함", "미래"): [
+        ("“내일은 오늘보다 더 좋은 날이 될 거야.” - 미상",
+         "지금의 행복한 마음이 미래를 밝게 비춰줄 거예요."),
+    ],
+    ("행복함", "번아웃"): [
+        ("“불꽃은 꺼지더라도 빛은 남는다.” - 미상",
+         "행복한 순간이 번아웃의 어둠 속에서도 작은 등불이 됩니다."),
+    ],
+    ("행복함", "스트레스"): [
+        ("“웃음은 영혼의 봄이다.” - 미상",
+         "행복한 마음은 어떤 스트레스도 잠시 잊게 해주는 힘이 있습니다."),
+    ],
 
-# CSV 불러오기
-def load_data():
-    try:
-        return pd.read_csv(BOOKS_FILE)
-    except:
-        return pd.DataFrame(columns=["제목", "저자", "출판사", "출간연도", "장르", "읽은날짜", "별점", "메모"])
+    # ---------------- 우울함 ----------------
+    ("우울함", "인간관계"): [
+        ("“사람이 사람을 위로하는 가장 큰 방법은, 곁에 있어주는 것이다.” - 알랭 드 보통",
+         "혼자가 아니라는 사실만으로도 큰 힘이 된다는 걸 기억하세요."),
+    ],
+    ("우울함", "학업"): [
+        ("“밤이 깊을수록 별은 더 빛난다.” - 도스토옙스키",
+         "지금 힘든 공부의 순간이 언젠가 당신의 별빛이 됩니다."),
+    ],
+    ("우울함", "미래"): [
+        ("“가장 어두운 밤도 끝나고 해는 떠오른다.” - 빅토르 위고",
+         "우울한 마음도 결국은 아침 햇살처럼 사라질 거예요."),
+    ],
+    ("우울함", "번아웃"): [
+        ("“쉬어가도 괜찮다. 멈춘 게 아니라, 다시 가기 위한 숨 고르기다.” - 미상",
+         "당신이 잠시 멈춰 있어도 충분히 의미 있는 시간이라는 위로예요."),
+    ],
+    ("우울함", "스트레스"): [
+        ("“눈물은 마음의 먼지를 씻어낸다.” - 미상",
+         "울어도 괜찮습니다. 눈물은 새로운 시작을 준비하는 과정이에요."),
+    ],
 
-def save_data(df):
-    df.to_csv(BOOKS_FILE, index=False)
+    # ---------------- 지침 ----------------
+    ("지침", "인간관계"): [
+        ("“말하지 않아도 전해지는 진심이 있다.” - 김소월",
+         "지친 관계 속에서도 침묵 속에 깃든 마음을 믿어보세요."),
+    ],
+    ("지침", "학업"): [
+        ("“넘어진 횟수가 중요한 게 아니라, 다시 일어선 횟수가 중요하다.” - 넬슨 만델라",
+         "공부에 지쳐도 다시 일어서려는 마음이 이미 큰 용기예요."),
+    ],
+    ("지침", "미래"): [
+        ("“길은 걸어가면 생기고, 멈추면 사라진다.” - 루쉰",
+         "앞이 보이지 않을 때도 한 걸음 내딛는 용기가 미래를 만듭니다."),
+    ],
+    ("지침", "번아웃"): [
+        ("“당신은 기계가 아니다. 숨 쉬고, 쉬어갈 권리가 있다.” - 미상",
+         "지침은 멈춤을 알려주는 신호일 뿐, 잘못이 아니에요."),
+    ],
+    ("지침", "스트레스"): [
+        ("“바람은 나무를 흔들지만, 뿌리를 뽑지 못한다.” - 미상",
+         "지친 마음도 결국은 다시 단단히 서게 될 거예요."),
+    ],
 
-# 책 검색 (Google Books API)
-def search_book(title):
-    url = f"https://www.googleapis.com/books/v1/volumes?q={title}"
-    response = requests.get(url)
-    data = response.json()
-    if "items" in data:
-        book = data["items"][0]["volumeInfo"]
-        return {
-            "제목": book.get("title", ""),
-            "저자": ", ".join(book.get("authors", [])),
-            "출판사": book.get("publisher", ""),
-            "출간연도": book.get("publishedDate", "")[:4],
-            "장르": ", ".join(book.get("categories", [])) if "categories" in book else ""
-        }
-    return None
+    # ---------------- 답답함 ----------------
+    ("답답함", "인간관계"): [
+        ("“서로를 이해하는 데는 말보다 침묵이 필요할 때가 있다.” - 미상",
+         "답답한 마음은 침묵 속에서 오히려 풀릴 수도 있습니다."),
+    ],
+    ("답답함", "학업"): [
+        ("“배움은 곧 자신을 발견하는 여행이다.” - 미상",
+         "공부가 답답하게 느껴질 때, 그 과정 자체가 나를 키운다는 걸 잊지 마세요."),
+    ],
+    ("답답함", "미래"): [
+        ("“길은 걸어가며 만들어지는 것이다.” - 프란츠 카프카",
+         "답답한 미래도 결국은 당신의 걸음 속에서 열립니다."),
+    ],
+    ("답답함", "번아웃"): [
+        ("“문은 닫혀 있어도 창문은 열려 있다.” - 미상",
+         "모든 게 막힌 것 같아도 다른 길이 반드시 있다는 믿음을 가져보세요."),
+    ],
+    ("답답함", "스트레스"): [
+        ("“강물은 바위를 만나도 멈추지 않는다.” - 미상",
+         "답답함도 결국은 흘러가고, 새로운 길을 만들어낼 거예요."),
+    ],
 
-# Streamlit UI
-st.title("📚 독서 기록 & 분석 앱")
+    # ---------------- 설렘 ----------------
+    ("설렘", "인간관계"): [
+        ("“사람이 온다는 건, 한 사람의 일생이 온다는 것이다.” - 정현종",
+         "새로운 만남이 당신의 삶을 더 풍요롭게 만들어줄 거예요."),
+    ],
+    ("설렘", "학업"): [
+        ("“배움의 기쁨은 끝없는 설렘이다.” - 미상",
+         "설레는 마음으로 배우는 순간, 지식이 삶의 빛이 됩니다."),
+    ],
+    ("설렘", "미래"): [
+        ("“미래는 아직 쓰이지 않은 시와 같다.” - 미상",
+         "당신의 설렘이 곧 미래를 채워갈 펜이 됩니다."),
+    ],
+    ("설렘", "번아웃"): [
+        ("“작은 설렘이 큰 지침을 이겨낸다.” - 미상",
+         "번아웃 속에서도 작은 설렘은 다시 나를 일으키는 힘이 됩니다."),
+    ],
+    ("설렘", "스트레스"): [
+        ("“새벽이 가장 어두울 때, 새날이 밝아온다.” - 미상",
+         "설렘은 스트레스를 넘어 새로운 시작을 열어줍니다."),
+    ],
+}
 
-df = load_data()
+# -----------------------------
+# 🎨 Streamlit UI
+# -----------------------------
+st.title("💊 오늘의 문학 처방전 ✒️")
+st.write("오늘의 기분과 고민을 선택하면, 지금의 당신에게 딱 맞는 문학 구절을 처방해드립니다.")
 
-# 책 추가하기
-st.header("책 추가하기")
-title = st.text_input("책 제목을 입력하세요")
-if st.button("검색"):
-    book_info = search_book(title)
-    if book_info:
-        st.write(book_info)
-        date = st.date_input("읽은 날짜")
-        rating = st.slider("별점", 0, 5, 3)
-        memo = st.text_area("메모")
-        if st.button("저장"):
-            new_entry = {**book_info, "읽은날짜": date, "별점": rating, "메모": memo}
-            df = pd.concat([df, pd.DataFrame([new_entry])], ignore_index=True)
-            save_data(df)
-            st.success("저장 완료!")
+# 사용자 입력
+mood = st.selectbox("오늘 기분은 어때요?", ["행복함", "우울함", "지침", "답답함", "설렘"])
+worry = st.selectbox("어떤 고민이 있나요?", ["인간관계", "학업", "미래", "번아웃", "스트레스"])
+
+# 결과 출력
+if st.button("📖 처방 받기"):
+    key = (mood, worry)
+    if key in prescriptions:
+        quote, explanation = random.choice(prescriptions[key])
+        st.subheader("📖 오늘의 문학 구절")
+        st.success(quote)
+        st.write(f"💡 {explanation}")
     else:
-        st.warning("책을 찾을 수 없습니다.")
-
-# 독서 기록 보기
-st.header("내 독서 기록")
-st.dataframe(df)
-
-# -------------------------------
-# 📊 분석 & 시각화
-# -------------------------------
-if not df.empty:
-    st.header("📈 독서 분석")
-
-    # 1. 연도별 독서량 추이
-    if "읽은날짜" in df.columns:
-        df["읽은날짜"] = pd.to_datetime(df["읽은날짜"], errors="coerce")
-        df["연도"] = df["읽은날짜"].dt.year
-
-        yearly_count = df["연도"].value_counts().sort_index()
-
-        st.subheader("연도별 독서량 추이")
-        fig, ax = plt.subplots()
-        yearly_count.plot(kind="bar", ax=ax)
-        ax.set_xlabel("연도")
-        ax.set_ylabel("읽은 책 수")
-        st.pyplot(fig)
-
-    # 2. 장르 분포
-    if "장르" in df.columns and df["장르"].notnull().any():
-        genres = df["장르"].dropna().str.split(",")
-        genres = [g.strip() for sublist in genres for g in sublist]  # flatten
-        genre_series = pd.Series(genres).value_counts()
-
-        st.subheader("장르 분포")
-        fig, ax = plt.subplots()
-        genre_series.plot(kind="pie", autopct='%1.1f%%', ax=ax)
-        ax.set_ylabel("")
-        st.pyplot(fig)
-
-        # 3. 워드클라우드 (장르 기반)
-        st.subheader("가장 많이 읽은 장르 워드클라우드")
-        wordcloud = WordCloud(width=800, height=400, background_color="white", colormap="Dark2").generate(" ".join(genres))
-        fig, ax = plt.subplots(figsize=(10, 5))
-        ax.imshow(wordcloud, interpolation="bilinear")
-        ax.axis("off")
-        st.pyplot(fig)
+        st.warning("아직 이 조합에 맞는 처방전이 준비되지 않았어요. 곧 업데이트될 예정입니다!")
