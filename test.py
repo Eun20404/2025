@@ -8,7 +8,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHwwf");
+        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -52,22 +52,25 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* ✅ 공통 버튼 스타일 */
+    /* ✅ 모든 버튼 공통 스타일 */
     .stButton>button, .stDownloadButton>button, .stFileUploader>button {
         border-radius: 8px;
         padding: 0.5em 1em;
         transition: 0.3s;
     }
 
-    /* ✅ 추가/삭제 버튼 → 검정 배경 */
-    div.stButton:first-child > button,  /* 추가하기 (폼 안 첫 버튼) */
-    div.stButton > button[kind="secondary"] { 
+    /* ✅ 추가하기 & 삭제 버튼 → 검정 배경 + 흰색 글씨 */
+    .stForm button, .stButton>button {
         background-color: #000000 !important;
         color: #ffffff !important;
         border: 1px solid #000000 !important;
     }
+    .stForm button:hover, .stButton>button:hover {
+        background-color: #222222 !important;
+        border: 1px solid #ffffff !important;
+    }
 
-    /* ✅ 나머지 버튼 (CSV 다운로드, 업로드 등) → 흰색 테두리/투명 배경 */
+    /* ✅ CSV 다운로드 / 업로드 버튼 → 흰색 테두리 + 투명 배경 */
     .stDownloadButton>button, .stFileUploader>button {
         color: #ffffff !important;
         border: 1px solid #ffffff !important;
