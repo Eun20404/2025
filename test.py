@@ -4,15 +4,17 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="📚 독서 기록 & 분석 앱", layout="wide")
 
-# 초기 세션 상태 설정
+# --- 초기 세션 상태 ---
 if "books" not in st.session_state:
-    st.session_state["books"] = pd.DataFrame(columns=["title", "authors", "publisher", "publishedDate", "categories"])
+    st.session_state["books"] = pd.DataFrame(
+        columns=["title", "authors", "publisher", "publishedDate", "categories"]
+    )
 
-# 입력값 초기화 함수
+# --- 입력값 초기화 함수 ---
 def reset_inputs():
     for key in ["title", "authors", "publisher", "categories", "published_date"]:
         if key in st.session_state:
-            st.session_state[key] = "" if key != "published_date" else None
+            del st.session_state[key]  # ✅ 값 초기화 대신 키 삭제
 
 # --- 입력 폼 ---
 st.header("📖 책 기록하기")
@@ -38,6 +40,7 @@ with st.form("book_form"):
         )
         st.success(f"✅ '{title}' 저장됨!")
         reset_inputs()  # ✅ 입력칸 초기화
+        st.experimental_rerun()  # ✅ UI 새로고침
 
 # --- 저장된 책 목록 ---
 st.header("📚 저장된 책 목록")
@@ -70,8 +73,8 @@ if not st.session_state["books"].empty:
     year_count = edited["year"].value_counts().sort_index()
     fig, ax = plt.subplots()
     year_count.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Publication year")       # ✅ 가로축 라벨
-    ax.set_ylabel("Number of books read")   # ✅ 세로축 라벨
+    ax.set_xlabel("Publication year")   # ✅ 가로축
+    ax.set_ylabel("Number of books read")  # ✅ 세로축
     st.pyplot(fig)
 
     # 2. 저자 TOP
@@ -81,4 +84,3 @@ if not st.session_state["books"].empty:
     ).explode()
     top_authors = authors_series.value_counts().head(10)
     st.bar_chart(top_authors)
-
