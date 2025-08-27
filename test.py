@@ -10,13 +10,21 @@ if "books" not in st.session_state:
         columns=["title", "authors", "publisher", "publishedDate", "categories"]
     )
 
+# 입력값 초기화 함수
+def reset_inputs():
+    st.session_state["title"] = ""
+    st.session_state["authors"] = ""
+    st.session_state["publisher"] = ""
+    st.session_state["categories"] = ""
+    st.session_state["published_date"] = None
+
 # 입력창 (Form)
 with st.form("book_form"):
-    title = st.text_input("책 제목")
-    authors = st.text_input("저자 (여러 명은 ,로 구분)")
-    publisher = st.text_input("출판사")
-    published_date = st.date_input("출간일")
-    categories = st.text_input("장르 (여러 개면 ,로 구분)")
+    title = st.text_input("책 제목", key="title")
+    authors = st.text_input("저자 (여러 명은 ,로 구분)", key="authors")
+    publisher = st.text_input("출판사", key="publisher")
+    published_date = st.date_input("출간일", key="published_date")
+    categories = st.text_input("장르 (여러 개면 ,로 구분)", key="categories")
 
     submitted = st.form_submit_button("추가하기")
     if submitted:
@@ -32,6 +40,7 @@ with st.form("book_form"):
             ignore_index=True
         )
         st.success(f"✅ '{title}' 저장됨!")
+        reset_inputs()  # 입력값 초기화
 
 # 기록이 있을 때만 분석 & 출력
 if not st.session_state["books"].empty:
