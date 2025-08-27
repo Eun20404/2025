@@ -5,21 +5,22 @@ import datetime
 
 st.set_page_config(page_title="📚 독서 기록 & 분석 앱", layout="wide")
 
-# 초기 세션 상태 설정
+# --- 초기 세션 상태 설정 ---
 if "books" not in st.session_state:
     st.session_state["books"] = pd.DataFrame(
         columns=["title", "authors", "publisher", "publishedDate", "categories"]
     )
 
-# 입력값 초기화 함수
+# --- 입력값 초기화 함수 ---
 def reset_inputs():
-    st.session_state["title"] = ""
-    st.session_state["authors"] = ""
-    st.session_state["publisher"] = ""
-    st.session_state["categories"] = ""
-    st.session_state["published_date"] = datetime.date.today()  # ✅ 오늘 날짜로 초기화
+    for key in ["title", "authors", "publisher", "categories", "published_date"]:
+        if key in st.session_state:  # ✅ 키가 있을 때만 초기화
+            if key == "published_date":
+                st.session_state[key] = datetime.date.today()  # 오늘 날짜로 초기화
+            else:
+                st.session_state[key] = ""
 
-# --- 입력 폼 ---
+# --- 책 기록 입력 폼 ---
 st.header("📖 책 기록하기")
 with st.form("book_form"):
     title = st.text_input("책 제목", key="title")
@@ -47,20 +48,21 @@ with st.form("book_form"):
 # --- 저장된 책 목록 ---
 st.header("📚 저장된 책 목록")
 if not st.session_state["books"].empty:
-    for i, row in st.session_state["books"].iterrows():
-        with st.container():
-            cols = st.columns([6, 1])
-            cols[0].write(f"**{row['title']}** | 저자: {row['authors']} | 출판사: {row['publisher']} | 출간일: {row['publishedDate']} | 장르: {row['categories']}")
-            if cols[1].button("❌ 삭제", key=f"delete_{i}"):
-                st.session_state["books"].drop(i, inplace=True)
-                st.session_state["books"].reset_index(drop=True, inplace=True)
-                st.experimental_rerun()
+    st.dataframe(st.session_state["books"], use_container_width=True)
 
-    # CSV 다운로드
+    # ✅ 책 삭제 기능
+    delete_title = st.selectbox("삭제할 책 선택", st.session_state["books"]["title"])
+    if st.button("❌ 선택한 책 삭제"):
+        st.session_state["books"] = st.session_state["books"][
+            st.session_state["books"]["title"] != delete_title
+        ].reset_index(drop=True)
+        st.success(f"'{delete_title}' 삭제 완료!")
+
+    # ✅ CSV 다운로드
     csv = st.session_state["books"].to_csv(index=False).encode("utf-8")
     st.download_button("📥 CSV 다운로드", csv, "books.csv", "text/csv")
 
-    # CSV 업로드
+    # ✅ CSV 업로드
     uploaded_file = st.file_uploader("📤 CSV 불러오기", type=["csv"])
     if uploaded_file is not None:
         st.session_state["books"] = pd.read_csv(uploaded_file)
@@ -77,17 +79,17 @@ if not st.session_state["books"].empty:
     # 출간연도 추출
     edited["year"] = pd.to_datetime(edited["publishedDate"], errors="coerce").dt.year
 
-    # 1. 연도별 독서량 추이
+    # 📈 연도별 독서량 추이
     st.subheader("📈 연도별 독서량 추이")
     year_count = edited["year"].value_counts().sort_index()
     fig, ax = plt.subplots()
     year_count.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Publication year")        # ✅ 가로축
-    ax.set_ylabel("Number of books read")    # ✅ 세로축
+    ax.set_xlabel("Publication year")   # ✅ 가로축
+    ax.set_ylabel("Number of books read")  # ✅ 세로축
     st.pyplot(fig)
 
-    # 2. 저자 TOP 10
-    st.subheader("👩‍💻 저자 TOP 10")
+    # 👩‍💻 저자 TOP
+    st.subheader("👩‍💻 저자 TOP")
     authors_series = edited["authors"].fillna("").apply(
         lambda s: [a.strip() for a in s.split(",") if a.strip()]
     ).explode()
