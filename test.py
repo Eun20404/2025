@@ -38,7 +38,7 @@ with st.form("book_form"):
         )
         st.success(f"✅ '{title}' 저장됨!")
         reset_inputs()
-        st.experimental_rerun()
+        st.rerun()  # ✅ 변경됨 (experimental_rerun → rerun)
 
 # --- 저장된 책 목록 ---
 st.header("📚 저장된 책 목록")
