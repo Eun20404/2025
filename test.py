@@ -1,20 +1,23 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import datetime
 
 st.set_page_config(page_title="📚 독서 기록 & 분석 앱", layout="wide")
 
-# --- 초기 세션 상태 ---
+# 초기 세션 상태 설정
 if "books" not in st.session_state:
     st.session_state["books"] = pd.DataFrame(
         columns=["title", "authors", "publisher", "publishedDate", "categories"]
     )
 
-# --- 입력값 초기화 함수 ---
+# 입력값 초기화 함수
 def reset_inputs():
-    for key in ["title", "authors", "publisher", "categories", "published_date"]:
-        if key in st.session_state:
-            del st.session_state[key]  # ✅ 값 초기화 대신 키 삭제
+    st.session_state["title"] = ""
+    st.session_state["authors"] = ""
+    st.session_state["publisher"] = ""
+    st.session_state["categories"] = ""
+    st.session_state["published_date"] = datetime.date.today()  # ✅ 오늘 날짜로 초기화
 
 # --- 입력 폼 ---
 st.header("📖 책 기록하기")
@@ -22,7 +25,7 @@ with st.form("book_form"):
     title = st.text_input("책 제목", key="title")
     authors = st.text_input("저자 (여러 명은 ,로 구분)", key="authors")
     publisher = st.text_input("출판사", key="publisher")
-    published_date = st.date_input("출간일", key="published_date")
+    published_date = st.date_input("출간일", key="published_date", value=datetime.date.today())
     categories = st.text_input("장르 (여러 개면 ,로 구분)", key="categories")
 
     submitted = st.form_submit_button("추가하기")
@@ -39,28 +42,19 @@ with st.form("book_form"):
             ignore_index=True
         )
         st.success(f"✅ '{title}' 저장됨!")
-        reset_inputs()
-        st.rerun()
+        reset_inputs()  # 입력칸 초기화
 
 # --- 저장된 책 목록 ---
 st.header("📚 저장된 책 목록")
 if not st.session_state["books"].empty:
-    st.dataframe(st.session_state["books"], use_container_width=True)
-
-    # ✅ 삭제 기능
-    st.subheader("🗑️ 책 삭제하기")
-    book_options = [
-        f"{i}. {row['title']} ({row['authors']})"
-        for i, row in st.session_state["books"].iterrows()
-    ]
-    selected_book = st.selectbox("삭제할 책 선택", options=book_options)
-
-    if st.button("삭제하기"):
-        index_to_delete = int(selected_book.split(".")[0])  # 인덱스 추출
-        st.session_state["books"].drop(index=index_to_delete, inplace=True)
-        st.session_state["books"].reset_index(drop=True, inplace=True)
-        st.success("✅ 선택한 책이 삭제되었습니다!")
-        st.rerun()
+    for i, row in st.session_state["books"].iterrows():
+        with st.container():
+            cols = st.columns([6, 1])
+            cols[0].write(f"**{row['title']}** | 저자: {row['authors']} | 출판사: {row['publisher']} | 출간일: {row['publishedDate']} | 장르: {row['categories']}")
+            if cols[1].button("❌ 삭제", key=f"delete_{i}"):
+                st.session_state["books"].drop(i, inplace=True)
+                st.session_state["books"].reset_index(drop=True, inplace=True)
+                st.experimental_rerun()
 
     # CSV 다운로드
     csv = st.session_state["books"].to_csv(index=False).encode("utf-8")
@@ -78,7 +72,7 @@ else:
 # --- 분석 ---
 if not st.session_state["books"].empty:
     st.header("📊 독서 데이터 분석")
-    edited = st.session_state["books"]
+    edited = st.session_state["books"].copy()
 
     # 출간연도 추출
     edited["year"] = pd.to_datetime(edited["publishedDate"], errors="coerce").dt.year
@@ -88,12 +82,12 @@ if not st.session_state["books"].empty:
     year_count = edited["year"].value_counts().sort_index()
     fig, ax = plt.subplots()
     year_count.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Publication year")   # ✅ 가로축
-    ax.set_ylabel("Number of books read")  # ✅ 세로축
+    ax.set_xlabel("Publication year")        # ✅ 가로축
+    ax.set_ylabel("Number of books read")    # ✅ 세로축
     st.pyplot(fig)
 
-    # 2. 저자 TOP
-    st.subheader("👩‍💻 저자 TOP")
+    # 2. 저자 TOP 10
+    st.subheader("👩‍💻 저자 TOP 10")
     authors_series = edited["authors"].fillna("").apply(
         lambda s: [a.strip() for a in s.split(",") if a.strip()]
     ).explode()
