@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud
 
 st.set_page_config(page_title="📚 독서 기록 & 분석 앱", layout="wide")
 
@@ -83,19 +82,3 @@ if not st.session_state["books"].empty:
     ).explode()
     top_authors = authors_series.value_counts().head(10)
     st.bar_chart(top_authors)
-
-    # 3. 장르 워드클라우드
-    st.subheader("🎨 가장 많이 읽은 장르 워드클라우드")
-    categories_series = edited["categories"].fillna("").apply(
-        lambda s: [c.strip() for c in s.split(",") if c.strip()]
-    ).explode()
-    text = " ".join(categories_series.dropna())
-
-    if text.strip():
-        wc = WordCloud(width=800, height=400, background_color="white").generate(text)
-        fig, ax = plt.subplots(figsize=(10, 5))
-        ax.imshow(wc, interpolation="bilinear")
-        ax.axis("off")
-        st.pyplot(fig)
-    else:
-        st.info("장르 데이터가 부족합니다.")
