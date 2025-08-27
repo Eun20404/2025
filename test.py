@@ -85,16 +85,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
-
-# -------------------------------
-# 🔹 초기 세션 상태
-# -------------------------------
-if "books" not in st.session_state:
-    st.session_state["books"] = pd.DataFrame(
-        columns=["title", "authors", "publisher", "publishedDate", "categories", "review"]
-    )
-
 # -------------------------------
 # 🔹 책 기록 입력
 # -------------------------------
@@ -105,7 +95,7 @@ with st.form("book_form", clear_on_submit=True):  # ✅ 제출 후 자동 초기
     publisher = st.text_input("출판사")
     published_date = st.date_input("출간일", value=datetime.date.today())  # ✅ 오늘 날짜 기본값
     categories = st.text_input("장르 (여러 개면 ,로 구분)")
-    review = st.text_input("한 줄평")  # ✅ 추가된 입력란
+    review = st.text_input("짧은 한 줄평 ✍️")  # ✅ 추가된 입력 칸
 
     submitted = st.form_submit_button("추가하기")
     if submitted:
@@ -154,10 +144,10 @@ if not st.session_state["books"].empty:
             st.warning("⚠️ 삭제할 책을 선택하세요.")
 
 else:
-    st.info("아직 저장된 책이 없습니다. 위 입력창에서 책을 추가해 보세요!")
+    st.info("📌 아직 저장된 책이 없습니다. 위 입력창에서 책을 추가해 보세요!")
 
 # -------------------------------
-# 🔹 분석
+# 🔹 독서 데이터 분석
 # -------------------------------
 if not st.session_state["books"].empty:
     st.header("📊 독서 데이터 분석")
@@ -166,19 +156,28 @@ if not st.session_state["books"].empty:
     # 출간연도 추출
     edited["year"] = pd.to_datetime(edited["publishedDate"], errors="coerce").dt.year
 
+    # ✅ 두 그래프를 나란히 배치
+    col1, col2 = st.columns(2)
+
     # 1. 연도별 독서량 추이
-    st.subheader("📈 연도별 독서량 추이")
-    year_count = edited["year"].value_counts().sort_index()
-    fig, ax = plt.subplots()
-    year_count.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Publication year")   # ✅ 가로축
-    ax.set_ylabel("Number of books read")  # ✅ 세로축
-    st.pyplot(fig)
+    with col1:
+        st.subheader("📈 연도별 독서량 추이")
+        year_count = edited["year"].value_counts().sort_index()
+        fig, ax = plt.subplots(figsize=(5, 3))  # ✅ 크기 줄임
+        year_count.plot(kind="bar", ax=ax)
+        ax.set_xlabel("출간 연도")
+        ax.set_ylabel("책 권수")
+        st.pyplot(fig)
 
     # 2. 저자 TOP 10
-    st.subheader("👩‍💻 저자 TOP 10")
-    authors_series = edited["authors"].fillna("").apply(
-        lambda s: [a.strip() for a in s.split(",") if a.strip()]
-    ).explode()
-    top_authors = authors_series.value_counts().head(10)
-    st.bar_chart(top_authors)
+    with col2:
+        st.subheader("👩‍💻 저자 TOP 10")
+        authors_series = edited["authors"].fillna("").apply(
+            lambda s: [a.strip() for a in s.split(",") if a.strip()]
+        ).explode()
+        top_authors = authors_series.value_counts().head(10)
+        fig, ax = plt.subplots(figsize=(5, 3))  # ✅ 크기 줄임
+        top_authors.plot(kind="barh", ax=ax)
+        ax.set_xlabel("책 권수")
+        ax.set_ylabel("저자")
+        st.pyplot(fig)
