@@ -9,110 +9,77 @@ import datetime
 st.markdown(
     """
     <style>
-    /* ------------------------------
-       전체 앱 배경 & 기본 글자
-    ------------------------------ */
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.1.0");
+        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=80&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         position: relative;
-        color: #ffffff !important;  /* 기본 글자색 = 흰색 */
+        color: #fdf5e6 !important;
     }
-
-    /* 배경 위 반투명 레이어 (따뜻한 노르스름 톤) */
     .stApp::before {
         content: "";
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background-color: rgba(222, 184, 135, 0.5); /* burlywood 색감 */
+        background-color: rgba(0, 0, 0, 0.45);
         z-index: 0;
     }
-    .stApp > div {
-        position: relative;
-        z-index: 1;
-    }
+    .stApp > div { position: relative; z-index: 1; }
 
-    /* ------------------------------
-       제목 (h1~h6)
-    ------------------------------ */
-    h1, h2, h3, h4, h5, h6 {
-        color: #ffffff !important;
-    }
+    /* 제목 */
+    h1, h2, h3, h4, h5, h6 { color: #ffe4b5 !important; }
 
-    /* ------------------------------
-       입력칸 제목 (label)
-    ------------------------------ */
+    /* 입력칸 라벨 */
     label, .stTextInput label, .stDateInput label, 
     .stSelectbox label, .stFileUploader label {
-        color: #ffffff !important;
+        color: #fdf5e6 !important;
     }
 
-    /* ------------------------------
-       입력칸 스타일 (노르스름 톤)
-    ------------------------------ */
+    /* 입력칸 자체 스타일 */
     .stTextInput>div>div>input, 
     .stDateInput>div>div>input,
     .stTextArea>div>textarea,
     .stSelectbox>div>div {
-        background-color: rgba(255, 228, 181, 0.85) !important;  /* warm tone */
-        color: #2f2f2f !important;  
-        border: 1px solid #deb887 !important;
+        background-color: rgba(255, 248, 220, 0.1) !important;  /* Cornsilk 톤 반투명 */
+        color: #fdf5e6 !important;   /* 아이보리 글자 */
+        border: 1px solid #ffe4b5 !important;  /* 따뜻한 노랑 테두리 */
         border-radius: 6px;
     }
     .stTextInput>div>div>input:focus,
     .stDateInput>div>div>input:focus,
     .stTextArea>div>textarea:focus,
     .stSelectbox>div>div:focus {
-        border: 1px solid #8b4513 !important;
-        background-color: rgba(255, 228, 181, 0.95) !important;
+        border: 1px solid #fffaf0 !important;  /* 포커스 시 더 밝은색 */
+        background-color: rgba(255, 228, 181, 0.15) !important;
     }
 
-    /* ------------------------------
-       데이터프레임 테이블
-    ------------------------------ */
-    .stDataFrame {
-        background: rgba(0, 0, 0, 0.5);
-        border-radius: 10px;
-        padding: 10px;
+    /* 데이터 테이블 */
+    .stDataFrame thead th, .stDataFrame tbody td { color: #fdf5e6 !important; }
+
+    /* 버튼 */
+    .stForm button, .stButton>button {
+        background-color: #2f2f2f !important;
+        color: #fffaf0 !important;
+        border: 1px solid #ffe4b5 !important;
     }
-    .stDataFrame thead th, .stDataFrame tbody td {
-        color: #ffffff !important;
+    .stForm button:hover, .stButton>button:hover {
+        background-color: #444444 !important;
+        border: 1px solid #fdf5e6 !important;
     }
 
-    /* ------------------------------
-       버튼 스타일
-    ------------------------------ */
-    .stButton>button, .stForm button {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-        border: 1px solid #000000 !important;
-        border-radius: 8px;
-        padding: 0.5em 1em;
-        transition: 0.3s;
-        font-weight: bold;
-    }
-    .stButton>button:hover, .stForm button:hover {
-        background-color: #222222 !important;
-        border: 1px solid #ffffff !important;
-    }
-
-    /* 다운로드 & 업로드 버튼 */
+    /* 다운로드/업로드 버튼 */
     .stDownloadButton>button, .stFileUploader>button {
-        color: #ffffff !important;
-        border: 1px solid #ffffff !important;
+        color: #fdf5e6 !important;
+        border: 1px solid #ffe4b5 !important;
         background: transparent !important;
     }
     .stDownloadButton>button:hover, .stFileUploader>button:hover {
-        background: rgba(255, 255, 255, 0.2) !important;
+        background: rgba(255, 228, 181, 0.2) !important;
     }
 
-    /* ------------------------------
-       알림 메시지 (info, warning, success 등)
-    ------------------------------ */
-    .stAlert {
-        color: #ffffff !important;
+    /* 알림 메시지 */
+    .stAlert, .stAlert div, .stAlert span, .stAlert * {
+        color: #fdf5e6 !important;
     }
     </style>
     """,
