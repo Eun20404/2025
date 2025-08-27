@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 
-st.set_page_config(page_title="📚 독서 기록 & 분석 앱", layout="wide")
+st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
 
 # --- 초기 세션 상태 ---
 if "books" not in st.session_state:
@@ -12,7 +12,7 @@ if "books" not in st.session_state:
     )
 
 # --- 책 기록 입력 ---
-st.header("📖 책 기록하기")
+st.header("📖 나만의 독서 일기장")
 with st.form("book_form", clear_on_submit=True):  # ✅ 제출 후 자동 초기화
     title = st.text_input("책 제목")
     authors = st.text_input("저자 (여러 명은 ,로 구분)")
