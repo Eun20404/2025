@@ -71,8 +71,8 @@ if not st.session_state["books"].empty:
     year_count = edited["year"].value_counts().sort_index()
     fig, ax = plt.subplots()
     year_count.plot(kind="bar", ax=ax)
-    ax.set_xlabel("출간연도")
-    ax.set_ylabel("읽은 책 수")
+    ax.set_xlabel("Publication year")
+    ax.set_ylabel("Number of books read")
     st.pyplot(fig)
 
     # 2. 저자 TOP
