@@ -171,9 +171,9 @@ if not st.session_state["books"].empty:
 
     # 2. 저자 TOP 10
     with col2:
-    st.subheader("👩‍💻 Top 10 Authors")
-    authors_series = edited["authors"].fillna("").apply(
+        st.subheader("👩‍💻 Top 10 Authors")
+        authors_series = edited["authors"].fillna("").apply(
         lambda s: [a.strip() for a in s.split(",") if a.strip()]
-    ).explode()
-    top_authors = authors_series.value_counts().head(10)
-    st.bar_chart(top_authors)
+        ).explode()
+        top_authors = authors_series.value_counts().head(10)
+        st.bar_chart(top_authors)
