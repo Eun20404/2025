@@ -1,3 +1,35 @@
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url("https://plus.unsplash.com/premium_photo-1698084059448-5bdc536e083a?q=80&w=715&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); /* 도서관 이미지 URL */
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        position: relative;
+    }
+
+    .stApp::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.4); /* 검은색 40% 투명 */
+        z-index: 0;
+    }
+
+    /* 내용물이 배경 위로 올라오도록 */
+    .stApp > div {
+        position: relative;
+        z-index: 1;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
