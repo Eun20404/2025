@@ -8,7 +8,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://plus.unsplash.com/premium_photo-1698084059448-5bdc536e083a?q=80&w=715&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"); /* 도서관 이미지 URL */
+        background-image: url("https://images.unsplash.com/photo-1739015830566-25729ca2180e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fCVFQiU5NCVCMCVFQiU5QyVCQiVFRCU5NSU5QyUyMCVFQiU4RiU4NCVFQyU4NCU5QyVFQSVCNCU4MHxlbnwwfHwwfHx8MA%3D%3D"); /* 도서관 이미지 URL */
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
