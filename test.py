@@ -39,13 +39,28 @@ with st.form("book_form"):
             ignore_index=True
         )
         st.success(f"✅ '{title}' 저장됨!")
-        reset_inputs()  # ✅ 입력칸 초기화
-        st.rerun()  # ✅ 최신 Streamlit에서는 st.rerun()
+        reset_inputs()
+        st.rerun()
 
 # --- 저장된 책 목록 ---
 st.header("📚 저장된 책 목록")
 if not st.session_state["books"].empty:
     st.dataframe(st.session_state["books"], use_container_width=True)
+
+    # ✅ 삭제 기능
+    st.subheader("🗑️ 책 삭제하기")
+    book_options = [
+        f"{i}. {row['title']} ({row['authors']})"
+        for i, row in st.session_state["books"].iterrows()
+    ]
+    selected_book = st.selectbox("삭제할 책 선택", options=book_options)
+
+    if st.button("삭제하기"):
+        index_to_delete = int(selected_book.split(".")[0])  # 인덱스 추출
+        st.session_state["books"].drop(index=index_to_delete, inplace=True)
+        st.session_state["books"].reset_index(drop=True, inplace=True)
+        st.success("✅ 선택한 책이 삭제되었습니다!")
+        st.rerun()
 
     # CSV 다운로드
     csv = st.session_state["books"].to_csv(index=False).encode("utf-8")
