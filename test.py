@@ -9,99 +9,59 @@ import datetime
 st.markdown(
     """
     <style>
-    /* ------------------------------
-       전체 앱 배경 & 기본 글자
-    ------------------------------ */
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=80&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww"); /* 도서관 이미지 */
+        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=80&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         position: relative;
-        color: #ffffff !important;  /* 기본 글자색 = 흰색 */
+        color: #fdf5e6 !important;  /* 전체 글자: OldLace */
     }
-
-    /* 배경 위 반투명 레이어 */
     .stApp::before {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4);
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: rgba(0, 0, 0, 0.45);  /* 반투명 어두움 */
         z-index: 0;
     }
-    .stApp > div {
-        position: relative;
-        z-index: 1;
-    }
+    .stApp > div { position: relative; z-index: 1; }
 
-    /* ------------------------------
-       제목 (h1~h6)
-    ------------------------------ */
-    h1, h2, h3, h4, h5, h6 {
-        color: #ffffff !important;
-    }
+    /* 제목 (더 따뜻하게 강조) */
+    h1, h2, h3, h4, h5, h6 { color: #ffe4b5 !important; }
 
-    /* ------------------------------
-       입력칸 제목 (label)
-    ------------------------------ */
+    /* 입력칸 라벨 */
     label, .stTextInput label, .stDateInput label, 
     .stSelectbox label, .stFileUploader label {
-        color: #ffffff !important;
+        color: #fdf5e6 !important;
     }
 
-    /* ------------------------------
-       데이터프레임 테이블
-    ------------------------------ */
-    .stDataFrame {
-        background: rgba(0, 0, 0, 0.5);
-        border-radius: 10px;
-        padding: 10px;
-    }
-    .stDataFrame thead th, .stDataFrame tbody td {
-        color: #ffffff !important;
-    }
+    /* 데이터 테이블 */
+    .stDataFrame thead th, .stDataFrame tbody td { color: #fdf5e6 !important; }
 
-    /* ------------------------------
-       버튼 스타일
-    ------------------------------ */
-    /* 모든 버튼 기본 */
-    .stButton>button, .stDownloadButton>button, 
-    .stFileUploader>button, .stForm button {
-        border-radius: 8px;
-        padding: 0.5em 1em;
-        transition: 0.3s;
-        font-weight: bold;
-    }
-
-    /* 추가하기 & 삭제 같은 일반 버튼 → 검정색 */
+    /* 버튼 */
     .stForm button, .stButton>button {
-        background-color: #000000 !important;
-        color: #ffffff !important;
-        border: 1px solid #000000 !important;
+        background-color: #2f2f2f !important;  /* 어두운 회색 */
+        color: #fffaf0 !important;             /* FloralWhite */
+        border: 1px solid #ffe4b5 !important;
     }
     .stForm button:hover, .stButton>button:hover {
-        background-color: #222222 !important;
-        border: 1px solid #ffffff !important;
+        background-color: #444444 !important;
+        border: 1px solid #fdf5e6 !important;
     }
 
-    /* 다운로드 & 업로드 버튼 → 투명 배경 + 흰색 테두리 */
+    /* 다운로드/업로드 버튼 */
     .stDownloadButton>button, .stFileUploader>button {
-        color: #ffffff !important;
-        border: 1px solid #ffffff !important;
+        color: #fdf5e6 !important;
+        border: 1px solid #ffe4b5 !important;
         background: transparent !important;
     }
     .stDownloadButton>button:hover, .stFileUploader>button:hover {
-        background: rgba(255, 255, 255, 0.2) !important;
+        background: rgba(255, 228, 181, 0.2) !important; /* Moccasin 살짝 */
     }
 
-    /* ------------------------------
-       알림 메시지 (info, warning, success 등)
-    ------------------------------ */
+    /* 알림 메시지 (성공/경고/정보창) */
     .stAlert, .stAlert div, .stAlert span, .stAlert * {
-        color: #ffffff !important;
+        color: #fdf5e6 !important;
     }
     </style>
     """,
