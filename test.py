@@ -1,24 +1,22 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 
-st.title("📚 나만의 도서관 일기장 ")
+st.set_page_config(page_title="📚 독서 기록 & 분석 앱", layout="wide")
 
-# 세션 상태에 데이터 저장
+# 초기 세션 상태 설정
 if "books" not in st.session_state:
-    st.session_state["books"] = pd.DataFrame(
-        columns=["title", "authors", "publisher", "publishedDate", "categories"]
-    )
+    st.session_state["books"] = pd.DataFrame(columns=["title", "authors", "publisher", "publishedDate", "categories"])
 
 # 입력값 초기화 함수
 def reset_inputs():
-    st.session_state["title"] = ""
-    st.session_state["authors"] = ""
-    st.session_state["publisher"] = ""
-    st.session_state["categories"] = ""
-    st.session_state["published_date"] = None
+    for key in ["title", "authors", "publisher", "categories", "published_date"]:
+        if key in st.session_state:
+            del st.session_state[key]
 
-# 입력창 (Form)
+# --- 입력 폼 ---
+st.header("📖 책 기록하기")
 with st.form("book_form"):
     title = st.text_input("책 제목", key="title")
     authors = st.text_input("저자 (여러 명은 ,로 구분)", key="authors")
@@ -40,46 +38,64 @@ with st.form("book_form"):
             ignore_index=True
         )
         st.success(f"✅ '{title}' 저장됨!")
-        reset_inputs()  # 입력값 초기화
+        reset_inputs()
+        st.experimental_rerun()
 
-# 기록이 있을 때만 분석 & 출력
+# --- 저장된 책 목록 ---
+st.header("📚 저장된 책 목록")
 if not st.session_state["books"].empty:
-    st.subheader("📖 나의 독서 기록")
-    st.dataframe(st.session_state["books"])
+    st.dataframe(st.session_state["books"], use_container_width=True)
 
     # CSV 다운로드
     csv = st.session_state["books"].to_csv(index=False).encode("utf-8")
-    st.download_button(
-        label="💾 CSV로 저장하기",
-        data=csv,
-        file_name="reading_log.csv",
-        mime="text/csv",
-    )
+    st.download_button("📥 CSV 다운로드", csv, "books.csv", "text/csv")
 
-    # 간단 분석
-    st.subheader("📊 독서 분석")
-    c1, c2 = st.columns(2)
-
-    with c1:
-        st.metric("총 독서량", len(st.session_state["books"]))
-
-    with c2:
-        st.metric(
-            "고유 저자 수",
-            st.session_state["books"]["authors"]
-            .fillna("")
-            .str.split(",")
-            .explode()
-            .str.strip()
-            .nunique()
-        )
-
-    # 출간연도별 독서량
-    st.subheader("출간 연도별 독서량")
-    df = st.session_state["books"].copy()
-    df["publishedDate"] = pd.to_datetime(df["publishedDate"], errors="coerce")
-    yearly = df.dropna(subset=["publishedDate"]).groupby(df["publishedDate"].dt.year).size()
-    st.line_chart(yearly)
+    # CSV 업로드
+    uploaded_file = st.file_uploader("📤 CSV 불러오기", type=["csv"])
+    if uploaded_file is not None:
+        st.session_state["books"] = pd.read_csv(uploaded_file)
+        st.success("✅ CSV 불러오기 완료!")
 
 else:
-    st.info("📥 아직 기록이 없어요. 위에 입력창에서 책을 추가해보세요!")
+    st.info("아직 저장된 책이 없습니다. 위 입력창에서 책을 추가해 보세요!")
+
+# --- 분석 ---
+if not st.session_state["books"].empty:
+    st.header("📊 독서 데이터 분석")
+    edited = st.session_state["books"]
+
+    # 출간연도 추출
+    edited["year"] = pd.to_datetime(edited["publishedDate"], errors="coerce").dt.year
+
+    # 1. 연도별 독서량 추이
+    st.subheader("📈 연도별 독서량 추이")
+    year_count = edited["year"].value_counts().sort_index()
+    fig, ax = plt.subplots()
+    year_count.plot(kind="bar", ax=ax)
+    ax.set_xlabel("출간연도")
+    ax.set_ylabel("읽은 책 수")
+    st.pyplot(fig)
+
+    # 2. 저자 TOP
+    st.subheader("👩‍💻 저자 TOP")
+    authors_series = edited["authors"].fillna("").apply(
+        lambda s: [a.strip() for a in s.split(",") if a.strip()]
+    ).explode()
+    top_authors = authors_series.value_counts().head(10)
+    st.bar_chart(top_authors)
+
+    # 3. 장르 워드클라우드
+    st.subheader("🎨 가장 많이 읽은 장르 워드클라우드")
+    categories_series = edited["categories"].fillna("").apply(
+        lambda s: [c.strip() for c in s.split(",") if c.strip()]
+    ).explode()
+    text = " ".join(categories_series.dropna())
+
+    if text.strip():
+        wc = WordCloud(width=800, height=400, background_color="white").generate(text)
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.imshow(wc, interpolation="bilinear")
+        ax.axis("off")
+        st.pyplot(fig)
+    else:
+        st.info("장르 데이터가 부족합니다.")
