@@ -1,3 +1,9 @@
+
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import datetime
+
 st.markdown(
     """
     <style>
@@ -29,11 +35,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import datetime
 
 st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
 
