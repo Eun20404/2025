@@ -171,13 +171,10 @@ if not st.session_state["books"].empty:
 
     # 2. 저자 TOP 10
     with col2:
-        st.subheader("👩‍💻 저자 TOP 10")
-        authors_series = edited["authors"].fillna("").apply(
-            lambda s: [a.strip() for a in s.split(",") if a.strip()]
-        ).explode()
-        top_authors = authors_series.value_counts().head(10)
-        fig, ax = plt.subplots(figsize=(5, 3))  # ✅ 크기 줄임
-        top_authors.plot(kind="barh", ax=ax)
-        ax.set_xlabel("Number of books")
-        ax.set_ylabel("Author")
-        st.pyplot(fig)
+    st.subheader("👩‍💻 저자 TOP 10")
+    authors_series = edited["authors"].fillna("").apply(
+        lambda s: [a.strip() for a in s.split(",") if a.strip()]
+    ).explode()
+    top_authors = authors_series.value_counts().head(10)
+
+    st.bar_chart(top_authors)
