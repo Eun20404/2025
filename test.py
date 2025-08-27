@@ -166,7 +166,7 @@ if not st.session_state["books"].empty:
         fig, ax = plt.subplots(figsize=(5, 3))  # ✅ 크기 줄임
         year_count.plot(kind="bar", ax=ax)
         ax.set_xlabel("Publication year")
-        ax.set_ylabel(Number of books")
+        ax.set_ylabel("Number of books")
         st.pyplot(fig)
 
     # 2. 저자 TOP 10
