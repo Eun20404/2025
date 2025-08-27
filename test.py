@@ -40,7 +40,7 @@ with st.form("book_form"):
         )
         st.success(f"✅ '{title}' 저장됨!")
         reset_inputs()  # ✅ 입력칸 초기화
-        st.experimental_rerun()  # ✅ UI 새로고침
+        st.rerun()  # ✅ 최신 Streamlit에서는 st.rerun()
 
 # --- 저장된 책 목록 ---
 st.header("📚 저장된 책 목록")
@@ -84,3 +84,4 @@ if not st.session_state["books"].empty:
     ).explode()
     top_authors = authors_series.value_counts().head(10)
     st.bar_chart(top_authors)
+    
