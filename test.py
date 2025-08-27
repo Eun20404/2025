@@ -7,15 +7,19 @@ import datetime
 st.markdown(
     """
     <style>
+    /* ------------------------------
+       전체 앱 배경 & 기본 글자
+    ------------------------------ */
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww");
+        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww"); /* 도서관 이미지 */
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         position: relative;
-        color: white;
+        color: #ffffff !important;  /* 기본 글자색 = 흰색 */
     }
 
+    /* 배경 위 반투명 레이어 */
     .stApp::before {
         content: "";
         position: absolute;
@@ -26,23 +30,29 @@ st.markdown(
         background-color: rgba(0, 0, 0, 0.4);
         z-index: 0;
     }
-
     .stApp > div {
         position: relative;
         z-index: 1;
     }
 
-    /* 제목 흰색 */
+    /* ------------------------------
+       제목 (h1~h6)
+    ------------------------------ */
     h1, h2, h3, h4, h5, h6 {
         color: #ffffff !important;
     }
 
-    /* 입력칸 레이블(label) */
-    label, .stTextInput label, .stDateInput label, .stSelectbox label, .stFileUploader label {
+    /* ------------------------------
+       입력칸 제목 (label)
+    ------------------------------ */
+    label, .stTextInput label, .stDateInput label, 
+    .stSelectbox label, .stFileUploader label {
         color: #ffffff !important;
     }
 
-    /* 데이터프레임 스타일 */
+    /* ------------------------------
+       데이터프레임 테이블
+    ------------------------------ */
     .stDataFrame {
         background: rgba(0, 0, 0, 0.5);
         border-radius: 10px;
@@ -52,14 +62,19 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* ✅ 모든 버튼 공통 스타일 */
-    .stButton>button, .stDownloadButton>button, .stFileUploader>button {
+    /* ------------------------------
+       버튼 스타일
+    ------------------------------ */
+    /* 모든 버튼 기본 */
+    .stButton>button, .stDownloadButton>button, 
+    .stFileUploader>button, .stForm button {
         border-radius: 8px;
         padding: 0.5em 1em;
         transition: 0.3s;
+        font-weight: bold;
     }
 
-    /* ✅ 추가하기 & 삭제 버튼 → 검정 배경 + 흰색 글씨 */
+    /* 추가하기 & 삭제 같은 일반 버튼 → 검정색 */
     .stForm button, .stButton>button {
         background-color: #000000 !important;
         color: #ffffff !important;
@@ -70,7 +85,7 @@ st.markdown(
         border: 1px solid #ffffff !important;
     }
 
-    /* ✅ CSV 다운로드 / 업로드 버튼 → 흰색 테두리 + 투명 배경 */
+    /* 다운로드 & 업로드 버튼 → 투명 배경 + 흰색 테두리 */
     .stDownloadButton>button, .stFileUploader>button {
         color: #ffffff !important;
         border: 1px solid #ffffff !important;
@@ -79,10 +94,18 @@ st.markdown(
     .stDownloadButton>button:hover, .stFileUploader>button:hover {
         background: rgba(255, 255, 255, 0.2) !important;
     }
+
+    /* ------------------------------
+       알림 메시지 (info, warning, success 등)
+    ------------------------------ */
+    .stAlert {
+        color: #ffffff !important;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
 
 # --- 초기 세션 상태 ---
