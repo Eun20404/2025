@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+from datetime import datetime
 
 CSV_FILE = "books.csv"
 
@@ -20,7 +21,11 @@ with st.form("book_form", clear_on_submit=True):
     title = st.text_input("책 제목")
     author = st.text_input("저자")
     publisher = st.text_input("출판사")
-    year = st.text_input("출간 연도")
+
+    # ✅ 출간연도 선택 (1900 ~ 현재 연도)
+    current_year = datetime.now().year
+    year = st.number_input("출간 연도", min_value=1900, max_value=current_year, value=current_year, step=1)
+
     genre = st.text_input("장르")
 
     submitted = st.form_submit_button("저장하기")
@@ -30,7 +35,7 @@ if submitted:
         "title": title,
         "author": author,
         "publisher": publisher,
-        "year": year,
+        "year": int(year),
         "genre": genre
     }])
     df = pd.concat([df, new_row], ignore_index=True)
