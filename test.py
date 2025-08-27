@@ -8,12 +8,11 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1739015830566-25729ca2180e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fCVFQiU5NCVCMCVFQiU5QyVCQiVFRCU5NSU5QyUyMCVFQiU4RiU4NCVFQyU4NCU5QyVFQSVCNCU4MHxlbnwwfHwwfHx8MA%3D%3D"); /* 도서관 이미지 URL */
+        background-image: url("https://images.unsplash.com/photo-1588580000645-4562a6d2c839?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fCVFQiU4RiU4NCVFQyU4NCU5QyVFQSVCNCU4MHxlbnwwfHwwfHx8MA%3D%3D");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         position: relative;
-        color: white; /* 전체 글자 흰색 */
     }
 
     .stApp::before {
@@ -23,7 +22,7 @@ st.markdown(
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4); /* 검은색 40% 투명 */
+        background-color: rgba(0, 0, 0, 0.4); /* 어둡게 오버레이 */
         z-index: 0;
     }
 
@@ -31,16 +30,18 @@ st.markdown(
     .stApp > div {
         position: relative;
         z-index: 1;
+        color: white;  /* 기본은 흰색 */
+        mix-blend-mode: difference; /* 배경과 반대로 대비 자동 적용 */
     }
 
-    /* 제목은 좀 더 밝게 강조 */
     h1, h2, h3, h4, h5, h6 {
-        color: #ffffff !important;
+        color: white !important;
+        mix-blend-mode: difference;
     }
 
-    /* 데이터프레임 안 글자 색 */
     .dataframe td, .dataframe th {
         color: white !important;
+        mix-blend-mode: difference;
     }
     </style>
     """,
