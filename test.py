@@ -15,18 +15,18 @@ st.markdown(
         background-position: center;
         background-attachment: fixed;
         position: relative;
-        color: #fdf5e6 !important;  /* 전체 글자: OldLace */
+        color: #fdf5e6 !important;
     }
     .stApp::before {
         content: "";
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background-color: rgba(0, 0, 0, 0.45);  /* 반투명 어두움 */
+        background-color: rgba(0, 0, 0, 0.45);
         z-index: 0;
     }
     .stApp > div { position: relative; z-index: 1; }
 
-    /* 제목 (더 따뜻하게 강조) */
+    /* 제목 */
     h1, h2, h3, h4, h5, h6 { color: #ffe4b5 !important; }
 
     /* 입력칸 라벨 */
@@ -35,13 +35,31 @@ st.markdown(
         color: #fdf5e6 !important;
     }
 
+    /* 입력칸 자체 스타일 */
+    .stTextInput>div>div>input, 
+    .stDateInput>div>div>input,
+    .stTextArea>div>textarea,
+    .stSelectbox>div>div {
+        background-color: rgba(255, 248, 220, 0.1) !important;  /* Cornsilk 톤 반투명 */
+        color: #fdf5e6 !important;   /* 아이보리 글자 */
+        border: 1px solid #ffe4b5 !important;  /* 따뜻한 노랑 테두리 */
+        border-radius: 6px;
+    }
+    .stTextInput>div>div>input:focus,
+    .stDateInput>div>div>input:focus,
+    .stTextArea>div>textarea:focus,
+    .stSelectbox>div>div:focus {
+        border: 1px solid #fffaf0 !important;  /* 포커스 시 더 밝은색 */
+        background-color: rgba(255, 228, 181, 0.15) !important;
+    }
+
     /* 데이터 테이블 */
     .stDataFrame thead th, .stDataFrame tbody td { color: #fdf5e6 !important; }
 
     /* 버튼 */
     .stForm button, .stButton>button {
-        background-color: #2f2f2f !important;  /* 어두운 회색 */
-        color: #fffaf0 !important;             /* FloralWhite */
+        background-color: #2f2f2f !important;
+        color: #fffaf0 !important;
         border: 1px solid #ffe4b5 !important;
     }
     .stForm button:hover, .stButton>button:hover {
@@ -56,10 +74,10 @@ st.markdown(
         background: transparent !important;
     }
     .stDownloadButton>button:hover, .stFileUploader>button:hover {
-        background: rgba(255, 228, 181, 0.2) !important; /* Moccasin 살짝 */
+        background: rgba(255, 228, 181, 0.2) !important;
     }
 
-    /* 알림 메시지 (성공/경고/정보창) */
+    /* 알림 메시지 */
     .stAlert, .stAlert div, .stAlert span, .stAlert * {
         color: #fdf5e6 !important;
     }
