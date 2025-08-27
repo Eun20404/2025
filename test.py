@@ -13,7 +13,7 @@ st.markdown(
         background-position: center;
         background-attachment: fixed;
         position: relative;
-        color: white; /* 전체 텍스트 흰색 */
+        color: white;
     }
 
     .stApp::before {
@@ -37,8 +37,8 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* 데이터프레임 안 글씨 */
-    .dataframe td, .dataframe th {
+    /* 입력칸 레이블(label) */
+    label, .stTextInput label, .stDateInput label, .stSelectbox label, .stFileUploader label {
         color: #ffffff !important;
     }
 
@@ -47,15 +47,21 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* 입력칸 레이블(label) 글씨 */
-    label, .stTextInput label, .stDateInput label, .stSelectbox label, .stFileUploader label {
+    /* ✅ 데이터프레임 표 전체 스타일 */
+    .stDataFrame {
+        background: rgba(0, 0, 0, 0.5); /* 표 배경 반투명 블랙 */
+        border-radius: 10px;            /* 모서리 둥글게 */
+        padding: 10px;
+    }
+
+    /* 표 제목칸 + 내용칸 글씨 흰색 */
+    .stDataFrame thead th, .stDataFrame tbody td {
         color: #ffffff !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-
 st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
 
 # --- 초기 세션 상태 ---
