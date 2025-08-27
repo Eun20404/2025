@@ -8,7 +8,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww"); /* 도서관 배경 */
+        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHwwf");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -23,7 +23,7 @@ st.markdown(
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4); /* 검은색 40% 투명 */
+        background-color: rgba(0, 0, 0, 0.4);
         z-index: 0;
     }
 
@@ -42,21 +42,39 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* 버튼 글씨 */
-    .stButton>button {
-        color: #ffffff !important;
-    }
-
-    /* ✅ 데이터프레임 표 전체 스타일 */
+    /* 데이터프레임 스타일 */
     .stDataFrame {
-        background: rgba(0, 0, 0, 0.5); /* 표 배경 반투명 블랙 */
-        border-radius: 10px;            /* 모서리 둥글게 */
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
         padding: 10px;
     }
-
-    /* 표 제목칸 + 내용칸 글씨 흰색 */
     .stDataFrame thead th, .stDataFrame tbody td {
         color: #ffffff !important;
+    }
+
+    /* ✅ 공통 버튼 스타일 */
+    .stButton>button, .stDownloadButton>button, .stFileUploader>button {
+        border-radius: 8px;
+        padding: 0.5em 1em;
+        transition: 0.3s;
+    }
+
+    /* ✅ 추가/삭제 버튼 → 검정 배경 */
+    div.stButton:first-child > button,  /* 추가하기 (폼 안 첫 버튼) */
+    div.stButton > button[kind="secondary"] { 
+        background-color: #000000 !important;
+        color: #ffffff !important;
+        border: 1px solid #000000 !important;
+    }
+
+    /* ✅ 나머지 버튼 (CSV 다운로드, 업로드 등) → 흰색 테두리/투명 배경 */
+    .stDownloadButton>button, .stFileUploader>button {
+        color: #ffffff !important;
+        border: 1px solid #ffffff !important;
+        background: transparent !important;
+    }
+    .stDownloadButton>button:hover, .stFileUploader>button:hover {
+        background: rgba(255, 255, 255, 0.2) !important;
     }
     </style>
     """,
