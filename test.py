@@ -170,7 +170,7 @@ if not st.session_state["books"].empty:
         st.pyplot(fig)
 
     # 2. 저자 TOP 10
- with col2:
+     with col2:
         st.subheader("👩‍💻 저자 TOP 10")
         authors_series = edited["authors"].fillna("").apply(
             lambda s: [a.strip() for a in s.split(",") if a.strip()]
