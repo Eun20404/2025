@@ -165,8 +165,8 @@ if not st.session_state["books"].empty:
         year_count = edited["year"].value_counts().sort_index()
         fig, ax = plt.subplots(figsize=(5, 3))  # ✅ 크기 줄임
         year_count.plot(kind="bar", ax=ax)
-        ax.set_xlabel("출간 연도")
-        ax.set_ylabel("책 권수")
+        ax.set_xlabel("Publication year")
+        ax.set_ylabel(Number of books")
         st.pyplot(fig)
 
     # 2. 저자 TOP 10
@@ -178,6 +178,6 @@ if not st.session_state["books"].empty:
         top_authors = authors_series.value_counts().head(10)
         fig, ax = plt.subplots(figsize=(5, 3))  # ✅ 크기 줄임
         top_authors.plot(kind="barh", ax=ax)
-        ax.set_xlabel("책 권수")
-        ax.set_ylabel("저자")
+        ax.set_xlabel("Number of books")
+        ax.set_ylabel("Author")
         st.pyplot(fig)
