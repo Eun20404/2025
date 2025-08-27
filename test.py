@@ -8,11 +8,12 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1588580000645-4562a6d2c839?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fCVFQiU4RiU4NCVFQyU4NCU5QyVFQSVCNCU4MHxlbnwwfHwwfHx8MA%3D%3D");
+        background-image: url("https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww"); /* 도서관 배경 */
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         position: relative;
+        color: white; /* 전체 텍스트 흰색 */
     }
 
     .stApp::before {
@@ -22,26 +23,29 @@ st.markdown(
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.4); /* 어둡게 오버레이 */
+        background-color: rgba(0, 0, 0, 0.4); /* 검은색 40% 투명 */
         z-index: 0;
     }
 
-    /* 내용물이 배경 위로 올라오도록 */
+    /* 본문 내용이 배경 위로 올라오도록 */
     .stApp > div {
         position: relative;
         z-index: 1;
-        color: white;  /* 기본은 흰색 */
-        mix-blend-mode: difference; /* 배경과 반대로 대비 자동 적용 */
     }
 
+    /* 제목 글씨 흰색 */
     h1, h2, h3, h4, h5, h6 {
-        color: white !important;
-        mix-blend-mode: difference;
+        color: #ffffff !important;
     }
 
+    /* 데이터프레임 안 글씨 */
     .dataframe td, .dataframe th {
-        color: white !important;
-        mix-blend-mode: difference;
+        color: #ffffff !important;
+    }
+
+    /* 버튼 안 글씨 */
+    .stButton>button {
+        color: #ffffff !important;
     }
     </style>
     """,
