@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-st.title("📚 독서 기록 & 분석 앱")
+st.title("📚 나만의 도서관 일기장 ")
 
 # 세션 상태에 데이터 저장
 if "books" not in st.session_state:
