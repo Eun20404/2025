@@ -8,7 +8,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww"); /* 도서관 배경 */
+        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww"); /* 도서관 배경 */
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -27,13 +27,12 @@ st.markdown(
         z-index: 0;
     }
 
-    /* 본문 내용이 배경 위로 올라오도록 */
     .stApp > div {
         position: relative;
         z-index: 1;
     }
 
-    /* 제목 글씨 흰색 */
+    /* 제목 흰색 */
     h1, h2, h3, h4, h5, h6 {
         color: #ffffff !important;
     }
@@ -43,14 +42,20 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* 버튼 안 글씨 */
+    /* 버튼 글씨 */
     .stButton>button {
+        color: #ffffff !important;
+    }
+
+    /* 입력칸 레이블(label) 글씨 */
+    label, .stTextInput label, .stDateInput label, .stSelectbox label, .stFileUploader label {
         color: #ffffff !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
 
 # --- 초기 세션 상태 ---
