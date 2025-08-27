@@ -78,33 +78,27 @@ st.markdown("---")
 st.markdown("#### 🏷️ 가장 많이 읽은 저자/출판사")
 top_n = st.slider("TOP N", 3, 15, 5, key="topn")
 
-
 c1, c2 = st.columns(2)
 
 with c1:
-    st.markdown("**저자 TOP**")
-    if "Author" in df.columns:
-        top_authors = (
-            df["Author"]
-            .dropna()
-            .str.split(",")
-            .explode()
-            .str.strip()
-            .value_counts()
-            .head(10)
-        )
-        st.bar_chart(top_authors)
+    st.metric(
+        "고유 저자 수",
+        edited["authors"]
+        .fillna("")
+        .apply(lambda s: [a.strip() for a in s.split(",") if a.strip()])
+        .explode()
+        .nunique()
+    )
 
 with c2:
-    st.markdown("**출판사 TOP**")
-    if "Publisher" in df.columns:
-        top_publishers = (
-            df["Publisher"]
-            .dropna()
-            .str.split(",")
-            .explode()
-            .str.strip()
-            .value_counts()
-            .head(10)
-        )
-        st.bar_chart(top_publishers)
+    st.metric(
+        "고유 출판사 수",
+        edited["publisher"]
+        .fillna("")
+        .apply(lambda s: [p.strip() for p in s.split(",") if p.strip()])
+        .explode()
+        .nunique()
+    )
+
+
+  
