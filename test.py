@@ -1,3 +1,8 @@
+import streamlit as st
+import pandas as pd
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+
 st.header("📊 독서 데이터 분석")
 
 if not edited.empty:
