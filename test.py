@@ -171,7 +171,7 @@ if not st.session_state["books"].empty:
 
     # 2. 저자 TOP 10
     with col2:
-        st.subheader("👩‍💻 Top 10 Authors")
+        st.subheader("👩‍💻 내 최애 작가님은 누구?")
         authors_series = edited["authors"].fillna("").apply(
         lambda s: [a.strip() for a in s.split(",") if a.strip()]
         ).explode()
