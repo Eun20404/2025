@@ -12,7 +12,7 @@ if "books" not in st.session_state:
 def reset_inputs():
     for key in ["title", "authors", "publisher", "categories", "published_date"]:
         if key in st.session_state:
-            del st.session_state[key]
+            st.session_state[key] = "" if key != "published_date" else None
 
 # --- 입력 폼 ---
 st.header("📖 책 기록하기")
@@ -37,8 +37,7 @@ with st.form("book_form"):
             ignore_index=True
         )
         st.success(f"✅ '{title}' 저장됨!")
-        reset_inputs()
-        st.rerun()  # ✅ 변경됨 (experimental_rerun → rerun)
+        reset_inputs()  # ✅ 입력칸 초기화
 
 # --- 저장된 책 목록 ---
 st.header("📚 저장된 책 목록")
@@ -71,8 +70,8 @@ if not st.session_state["books"].empty:
     year_count = edited["year"].value_counts().sort_index()
     fig, ax = plt.subplots()
     year_count.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Publication year")
-    ax.set_ylabel("Number of books read")
+    ax.set_xlabel("Publication year")       # ✅ 가로축 라벨
+    ax.set_ylabel("Number of books read")   # ✅ 세로축 라벨
     st.pyplot(fig)
 
     # 2. 저자 TOP
@@ -82,3 +81,4 @@ if not st.session_state["books"].empty:
     ).explode()
     top_authors = authors_series.value_counts().head(10)
     st.bar_chart(top_authors)
+
