@@ -3,10 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 
-# --- 페이지 설정 ---
-st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
-
-# --- CSS 스타일 적용 ---
+# -------------------------------
+# 🔹 스타일 (CSS)
+# -------------------------------
 st.markdown(
     """
     <style>
@@ -14,12 +13,12 @@ st.markdown(
        전체 앱 배경 & 기본 글자
     ------------------------------ */
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww");
+        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=80&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJThGJTg0JUVDJTg0JTlDJUVBJUI0JTgwfGVufDB8fDB8fHww"); /* 도서관 이미지 */
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
         position: relative;
-        color: #ffffff !important;  
+        color: #ffffff !important;  /* 기본 글자색 = 흰색 */
     }
 
     /* 배경 위 반투명 레이어 */
@@ -68,6 +67,7 @@ st.markdown(
     /* ------------------------------
        버튼 스타일
     ------------------------------ */
+    /* 모든 버튼 기본 */
     .stButton>button, .stDownloadButton>button, 
     .stFileUploader>button, .stForm button {
         border-radius: 8px;
@@ -76,7 +76,7 @@ st.markdown(
         font-weight: bold;
     }
 
-    /* 추가하기 & 삭제 버튼 → 검정색 */
+    /* 추가하기 & 삭제 같은 일반 버튼 → 검정색 */
     .stForm button, .stButton>button {
         background-color: #000000 !important;
         color: #ffffff !important;
@@ -87,7 +87,7 @@ st.markdown(
         border: 1px solid #ffffff !important;
     }
 
-    /* 다운로드 & 업로드 버튼 → 투명 배경 */
+    /* 다운로드 & 업로드 버튼 → 투명 배경 + 흰색 테두리 */
     .stDownloadButton>button, .stFileUploader>button {
         color: #ffffff !important;
         border: 1px solid #ffffff !important;
@@ -100,7 +100,7 @@ st.markdown(
     /* ------------------------------
        알림 메시지 (info, warning, success 등)
     ------------------------------ */
-    .stAlert, .stInfo, .stWarning, .stSuccess {
+    .stAlert, .stAlert div, .stAlert span, .stAlert * {
         color: #ffffff !important;
     }
     </style>
@@ -108,21 +108,27 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# --- 초기 세션 상태 ---
+st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
+
+# -------------------------------
+# 🔹 초기 세션 상태
+# -------------------------------
 if "books" not in st.session_state:
     st.session_state["books"] = pd.DataFrame(
-        columns=["title", "authors", "publisher", "publishedDate", "categories", "review"]  # ✅ review 추가
+        columns=["title", "authors", "publisher", "publishedDate", "categories", "review"]
     )
 
-# --- 책 기록 입력 ---
+# -------------------------------
+# 🔹 책 기록 입력
+# -------------------------------
 st.header("📖 나만의 독서 일기장")
-with st.form("book_form", clear_on_submit=True):
+with st.form("book_form", clear_on_submit=True):  # ✅ 제출 후 자동 초기화
     title = st.text_input("책 제목")
     authors = st.text_input("저자 (여러 명은 ,로 구분)")
     publisher = st.text_input("출판사")
-    published_date = st.date_input("출간일", value=datetime.date.today())
+    published_date = st.date_input("출간일", value=datetime.date.today())  # ✅ 오늘 날짜 기본값
     categories = st.text_input("장르 (여러 개면 ,로 구분)")
-    review = st.text_input("짧은 한 줄평")   # ✅ 추가됨
+    review = st.text_input("한 줄평")  # ✅ 추가된 입력란
 
     submitted = st.form_submit_button("추가하기")
     if submitted:
@@ -140,7 +146,9 @@ with st.form("book_form", clear_on_submit=True):
         )
         st.success(f"✅ '{title}' 저장됨!")
 
-# --- 저장된 책 목록 ---
+# -------------------------------
+# 🔹 저장된 책 목록
+# -------------------------------
 st.header("📚 저장된 책 목록")
 if not st.session_state["books"].empty:
     st.dataframe(st.session_state["books"], use_container_width=True)
@@ -171,7 +179,9 @@ if not st.session_state["books"].empty:
 else:
     st.info("아직 저장된 책이 없습니다. 위 입력창에서 책을 추가해 보세요!")
 
-# --- 분석 ---
+# -------------------------------
+# 🔹 분석
+# -------------------------------
 if not st.session_state["books"].empty:
     st.header("📊 독서 데이터 분석")
     edited = st.session_state["books"].copy()
@@ -184,8 +194,8 @@ if not st.session_state["books"].empty:
     year_count = edited["year"].value_counts().sort_index()
     fig, ax = plt.subplots()
     year_count.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Publication year")
-    ax.set_ylabel("Number of books read")
+    ax.set_xlabel("Publication year")   # ✅ 가로축
+    ax.set_ylabel("Number of books read")  # ✅ 세로축
     st.pyplot(fig)
 
     # 2. 저자 TOP 10
