@@ -13,6 +13,7 @@ st.markdown(
         background-position: center;
         background-attachment: fixed;
         position: relative;
+        color: white; /* 전체 글자 흰색 */
     }
 
     .stApp::before {
@@ -31,11 +32,20 @@ st.markdown(
         position: relative;
         z-index: 1;
     }
+
+    /* 제목은 좀 더 밝게 강조 */
+    h1, h2, h3, h4, h5, h6 {
+        color: #ffffff !important;
+    }
+
+    /* 데이터프레임 안 글자 색 */
+    .dataframe td, .dataframe th {
+        color: white !important;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
-
 st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
 
 # --- 초기 세션 상태 ---
