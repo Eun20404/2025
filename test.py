@@ -5,9 +5,6 @@ import datetime
 
 st.set_page_config(page_title="📚 나만의 독서 일기장", layout="wide")
 
-# ==============================
-# CSS 스타일 총정리
-# ==============================
 st.markdown(
     """
     <style>
@@ -15,7 +12,7 @@ st.markdown(
        전체 앱 배경 & 기본 글자
     ------------------------------ */
     .stApp {
-        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=80");
+        background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1200&auto=format&fit=crop&q=80&ixlib=rb-4.1.0"); /* 도서관 이미지 */
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -102,17 +99,13 @@ st.markdown(
     /* ------------------------------
        알림 메시지 (info, warning, success 등)
     ------------------------------ */
-    .stAlert {
+    .stAlert, .stAlert div, .stAlert span {
         color: #ffffff !important;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-
-# ==============================
-# 앱 본문
-# ==============================
 
 # --- 초기 세션 상태 ---
 if "books" not in st.session_state:
@@ -122,11 +115,11 @@ if "books" not in st.session_state:
 
 # --- 책 기록 입력 ---
 st.header("📖 나만의 독서 일기장")
-with st.form("book_form", clear_on_submit=True):  # 제출 후 자동 초기화
+with st.form("book_form", clear_on_submit=True):  # ✅ 제출 후 자동 초기화
     title = st.text_input("책 제목")
     authors = st.text_input("저자 (여러 명은 ,로 구분)")
     publisher = st.text_input("출판사")
-    published_date = st.date_input("출간일", value=datetime.date.today())
+    published_date = st.date_input("출간일", value=datetime.date.today())  # ✅ 오늘 날짜 기본값
     categories = st.text_input("장르 (여러 개면 ,로 구분)")
 
     submitted = st.form_submit_button("추가하기")
@@ -149,17 +142,17 @@ st.header("📚 저장된 책 목록")
 if not st.session_state["books"].empty:
     st.dataframe(st.session_state["books"], use_container_width=True)
 
-    # CSV 다운로드
+    # 📥 CSV 다운로드
     csv = st.session_state["books"].to_csv(index=False).encode("utf-8")
     st.download_button("📥 CSV 다운로드", csv, "books.csv", "text/csv")
 
-    # CSV 업로드
+    # 📤 CSV 업로드
     uploaded_file = st.file_uploader("📤 CSV 불러오기", type=["csv"])
     if uploaded_file is not None:
         st.session_state["books"] = pd.read_csv(uploaded_file)
         st.success("✅ CSV 불러오기 완료!")
 
-    # 책 삭제
+    # 🗑️ 책 삭제 기능
     st.subheader("🗑️ 책 삭제하기")
     book_list = st.session_state["books"]["title"].tolist()
     book_to_delete = st.selectbox("삭제할 책 선택", [""] + book_list)
@@ -183,16 +176,16 @@ if not st.session_state["books"].empty:
     # 출간연도 추출
     edited["year"] = pd.to_datetime(edited["publishedDate"], errors="coerce").dt.year
 
-    # 연도별 독서량 추이
+    # 1. 연도별 독서량 추이
     st.subheader("📈 연도별 독서량 추이")
     year_count = edited["year"].value_counts().sort_index()
     fig, ax = plt.subplots()
     year_count.plot(kind="bar", ax=ax)
-    ax.set_xlabel("Publication year")
-    ax.set_ylabel("Number of books read")
+    ax.set_xlabel("Publication year")   # ✅ 가로축
+    ax.set_ylabel("Number of books read")  # ✅ 세로축
     st.pyplot(fig)
 
-    # 저자 TOP 10
+    # 2. 저자 TOP 10
     st.subheader("👩‍💻 저자 TOP 10")
     authors_series = edited["authors"].fillna("").apply(
         lambda s: [a.strip() for a in s.split(",") if a.strip()]
