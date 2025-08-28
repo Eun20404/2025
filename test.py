@@ -142,7 +142,7 @@ if not st.session_state["books"].empty:
         ax.set_ylabel("Books Read")
         st.pyplot(fig)
 
-    # 2. 저자 TOP 10
+   # 2. 저자 TOP 10
     with col2:
         st.subheader("👩‍💻 Top 10 Authors")
         authors_series = edited["authors"].fillna("").apply(
