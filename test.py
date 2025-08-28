@@ -15,42 +15,39 @@ if "books" not in st.session_state:
     )
 
 # -------------------------------
-# 🔹 스타일 (도서관 배경 + 노르스름 톤)
+# 🔹 스타일 (글자만 노르스름 톤)
 # -------------------------------
 st.markdown(
     """
     <style>
-    /* 배경 이미지 + 반투명 */
+    /* 배경 이미지는 그대로 */
     .stApp {
         background-image: url("https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=1600");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
-        background-color: rgba(255, 250, 230, 0.85); /* 노르스름 톤 */
-        background-blend-mode: overlay;
-        color: white;
     }
 
-    /* 헤더, 텍스트 전체 흰색 */
+    /* 글자 노르스름 톤 */
     h1, h2, h3, h4, h5, h6, p, label, span, div, .stMarkdown {
-        color: white !important;
+        color: #FFF8DC !important;  /* Cornsilk 톤 */
     }
 
-    /* 입력칸 (노르스름 배경 + 흰 글씨) */
+    /* 입력칸 (투명 배경 + 검정 글씨) */
     input, textarea, select {
-        background-color: rgba(255, 255, 240, 0.8) !important;
+        background-color: rgba(255, 255, 255, 0.8) !important;
         color: black !important;
     }
 
-    /* 데이터프레임 내부 글자 */
+    /* 데이터프레임 글자 */
     .stDataFrame div {
-        color: white !important;
+        color: #FFF8DC !important;
     }
 
-    /* 버튼 스타일 */
+    /* 버튼 (검정 + 노르스름 글씨) */
     button {
         background-color: black !important;
-        color: white !important;
+        color: #FFF8DC !important;
         border-radius: 8px !important;
         border: none !important;
         padding: 0.5em 1em !important;
@@ -121,7 +118,7 @@ if not st.session_state["books"].empty:
             st.warning("⚠️ 삭제할 책을 선택하세요.")
 
 else:
-    st.info("📌 아직 저장된 책이 없습니다. 위 입력창에서 책을 추가해 보세요!")  # ✅ 흰색 적용됨
+    st.info("📌 아직 저장된 책이 없습니다. 위 입력창에서 책을 추가해 보세요!")  
 
 # -------------------------------
 # 🔹 분석
