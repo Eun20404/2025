@@ -28,9 +28,9 @@ st.markdown(
         background-attachment: fixed;
     }
 
-    /* 글자 노르스름 톤 */
+    /* 기본 글자 노르스름 */
     h1, h2, h3, h4, h5, h6, p, label, span, div, .stMarkdown {
-        color: #FFF8DC !important;  /* Cornsilk 톤 */
+        color: #FFF8DC !important;
     }
 
     /* 입력칸 */
@@ -39,16 +39,30 @@ st.markdown(
         color: black !important;
     }
 
-    /* 📅 date_input 캘린더 */
+    /* 📅 date_input 입력창 */
     .stDateInput input {
         background-color: black !important;
         color: #FFF8DC !important;
         border: 1px solid #FFF8DC !important;
         border-radius: 5px !important;
     }
+
+    /* 📅 캘린더 팝업 전체 */
     .stDateInput [data-baseweb="popover"] {
         background-color: black !important;
         color: #FFF8DC !important;
+    }
+
+    /* 📅 캘린더 내부 날짜/요일 글자 */
+    .stDateInput [data-baseweb="calendar"] * {
+        color: #FFF8DC !important;
+    }
+
+    /* 📅 선택된 날짜 */
+    .stDateInput [aria-selected="true"] {
+        background-color: #FFF8DC !important;
+        color: black !important;
+        border-radius: 4px;
     }
 
     /* 데이터프레임 글자 */
@@ -68,7 +82,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 # -------------------------------
 # 🔹 책 기록 입력
 # -------------------------------
